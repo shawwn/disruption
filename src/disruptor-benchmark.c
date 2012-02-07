@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "disruptor.h"
+#include "util.h"
 
 int main(int argc, char** argv)
 {
@@ -8,6 +9,9 @@ int main(int argc, char** argv)
     (void)argv;
 
     {
+        char* test = strformat( "Hello, %s", argv[0] );
+        printf( "%s\n", test );
+        strfree( test );
     }
 
     return 0;

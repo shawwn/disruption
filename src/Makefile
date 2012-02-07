@@ -9,9 +9,9 @@ ALLOC_DEP=
 ALLOC_LINK=
 ALLOC_FLAGS=
 
-CFLAGS?=
-CCLINK?=
-DEBUG?=
+CFLAGS?=-std=c99 -pedantic $(OPTIMIZATION) -Wall -W
+CCLINK?=-lrt
+DEBUG?=-g -rdynamic -ggdb
 
 CCOPT= $(CFLAGS) $(ARCH) $(PROF)
 
@@ -19,7 +19,7 @@ PREFIX= /usr/local
 INSTALL_BIN= $(PREFIX)/bin
 INSTALL= cp -p
 
-OBJ = disruptor.o
+OBJ = disruptor.o util.o zmalloc.o
 BENCHOBJ = $(OBJ) disruptor-benchmark.o
 
 BENCHPRGNAME = disruptor-benchmark
@@ -30,6 +30,8 @@ all: disruptor-benchmark
 # Deps (use make dep -o generate this)
 disruptor-benchmark.o: disruptor-benchmark.c disruptor.h
 disruptor.o: disruptor.c disruptor.h
+util.o: util.c util.h zmalloc.h
+zmalloc.o: zmalloc.c zmalloc.h
 
 .PHONY: dependencies
 
