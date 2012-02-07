@@ -30,7 +30,8 @@ char* vstrformat( const char* fmt, va_list ap )
     /* determine the length of the resultant string. */
     {
         int ret;
-        ret = vsnprintf( NULL, 0, fmt, ap );
+        va_list tmp = ap;
+        ret = vsnprintf( NULL, 0, fmt, tmp );
         assert( ret >= 0 );
         len = (size_t)ret + 1;
     }

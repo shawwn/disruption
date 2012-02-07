@@ -43,7 +43,7 @@ void shmemUnlink( const char* formatName, ... )
     va_list ap;
     va_start( ap, formatName );
     {
-        char* fullname = strformat( formatName, ap );
+        char* fullname = vstrformat( formatName, ap );
         handleInfo( NULL, "shmemUnlink('%s')", fullname );
         platformUnlink( fullname );
         strfree( fullname );
@@ -76,7 +76,9 @@ void shmemClose( shmem* s )
     if ( !s )
         return;
 
+#if 0
     handleInfo( s, "close()" );
+#endif
     shutdown( s );
     strfree( s->name );
     zfree( s );
