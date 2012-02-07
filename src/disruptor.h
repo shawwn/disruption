@@ -12,7 +12,7 @@ typedef struct disruptor disruptor;
 * Function prototypes
 *----------------------------------------------------------------------------*/
 
-disruptor* disruptorCreate( const char* address, const char* userName );
+disruptor* disruptorCreate( const char* address, const char* username );
 void disruptorRelease( disruptor* d );
 
 #endif

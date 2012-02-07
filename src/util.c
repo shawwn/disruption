@@ -11,7 +11,7 @@ void strfree( char* str )
     zfree( str );
 }
 
-char* strclone( char* str )
+char* strclone( const char* str )
 {
     size_t len;
     char* result;
@@ -22,7 +22,7 @@ char* strclone( char* str )
     return result;
 }
 
-char* strformat( char* fmt, ... )
+char* strformat( const char* fmt, ... )
 {
     size_t len;
     char* result;
