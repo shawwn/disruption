@@ -2,8 +2,19 @@
 
 #include "util.h"
 #include "zmalloc.h"
+#include "shmem.h"
 #include <stdio.h>
 #include <string.h>
+
+/* constants. */
+#define MAX_ADDRESS_LENGTH      31
+#define MAX_USERNAME_LENGTH     31
+
+/* types */
+typedef struct disruptorConn
+{
+    char name[ MAX_USERNAME_LENGTH + 1 ];
+} disruptorConn;
 
 struct disruptor
 {
@@ -15,10 +26,6 @@ struct disruptor
 static bool initialize( disruptor* d );
 static void shutdown( disruptor* d );
 static void handleError( disruptor* d, const char* fmt, ... );
-
-/* constants. */
-#define MAX_ADDRESS_LENGTH      32
-#define MAX_USERNAME_LENGTH     32
 
 /*-----------------------------------------------------------------------------
 * Public API definitions.

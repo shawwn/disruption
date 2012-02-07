@@ -5,6 +5,19 @@
 
 OPTIMIZATION?=-O2
 
+
+CCCOLOR="\033[34m"
+LINKCOLOR="\033[34;1m"
+SRCCOLOR="\033[33m"
+BINCOLOR="\033[37;1m"
+MAKECOLOR="\033[32;1m"
+ENDCOLOR="\033[0m"
+
+ifndef V
+QUIET_CC = @printf '    %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR)$@$(ENDCOLOR);
+QUIET_LINK = @printf '    %b %b\n' $(LINKCOLOR)LINK$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR);
+endif
+
 ALLOC_DEP=
 ALLOC_LINK=
 ALLOC_FLAGS=
@@ -19,7 +32,7 @@ PREFIX= /usr/local
 INSTALL_BIN= $(PREFIX)/bin
 INSTALL= cp -p
 
-OBJ = disruptor.o util.o zmalloc.o
+OBJ = disruptor.o util.o zmalloc.o shmem.o
 BENCHOBJ = $(OBJ) disruptor-benchmark.o
 
 BENCHPRGNAME = disruptor-benchmark
@@ -28,8 +41,9 @@ all: disruptor-benchmark
 
 
 # Deps (use make dep -o generate this)
-disruptor-benchmark.o: disruptor-benchmark.c disruptor.h
-disruptor.o: disruptor.c disruptor.h
+disruptor-benchmark.o: disruptor-benchmark.c disruptor.h util.h
+disruptor.o: disruptor.c disruptor.h util.h zmalloc.h shmem.h
+shmem.o: shmem.c shmem.h
 util.o: util.c util.h zmalloc.h
 zmalloc.o: zmalloc.c zmalloc.h
 
@@ -38,13 +52,13 @@ zmalloc.o: zmalloc.c zmalloc.h
 dependencies:
 
 disruptor-benchmark.o:
-	$(CC) -c $(CFLAGS) $(DEBUG) $(COMPILE_TIME) $<
+	$(QUIET_CC)$(CC) -c $(CFLAGS) $(DEBUG) $(COMPILE_TIME) $<
 
 disruptor-benchmark: dependencies $(BENCHOBJ)
-	$(CC) -o $(BENCHPRGNAME) $(CCOPT) $(DEBUG) $(BENCHOBJ) $(CCLINK) $(ALLOC_LINK)
+	$(QUIET_LINK)$(CC) -o $(BENCHPRGNAME) $(CCOPT) $(DEBUG) $(BENCHOBJ) $(CCLINK) $(ALLOC_LINK)
 
 %.o: %.c $(ALLOC_DEP)
-	$(CC) -c $(CFLAGS) $(ALLOC_FLAGS) $(DEBUG) $(COMPILE_TIME) $<
+	$(QUIET_CC)$(CC) -c $(CFLAGS) $(ALLOC_FLAGS) $(DEBUG) $(COMPILE_TIME) $<
 
 clean:
 	rm -rf $(BENCHPRGNAME) *.o *.gcda *.gcno *.gcov
