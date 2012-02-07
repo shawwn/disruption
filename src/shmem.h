@@ -1,8 +1,7 @@
 #ifndef __DISRUPTOR_SHMEM_H__
 #define __DISRUPTOR_SHMEM_H__
 
-#include <stdint.h>
-
+#include <stdint.h> 
 /*-----------------------------------------------------------------------------
 * Declarations
 *----------------------------------------------------------------------------*/
@@ -19,8 +18,11 @@ typedef struct shmem shmem;
 * Function prototypes
 *----------------------------------------------------------------------------*/
 
-shmem* shmemOpen( const char* name, int64_t size, int flags );
+void shmemUnlink( const char* formatName, ... );
+shmem* shmemOpen( int64_t size, int flags, const char* formatName, ... );
 void shmemClose( shmem* s );
+int64_t shmemGetSize( shmem* s );
+void* shmemGetPtr( shmem* s );
 
 #endif
 

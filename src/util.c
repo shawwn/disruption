@@ -22,7 +22,7 @@ char* strclone( const char* str )
     return result;
 }
 
-char* strformat( const char* fmt, ... )
+char* vstrformat( const char* fmt, va_list ap )
 {
     size_t len;
     char* result;
@@ -30,9 +30,9 @@ char* strformat( const char* fmt, ... )
     /* determine the length of the resultant string. */
     {
         int ret;
-        ret = vsnprintf( NULL, 0, fmt, (char*)(&fmt + 1) );
+        ret = vsnprintf( NULL, 0, fmt, ap );
         assert( ret >= 0 );
-        len = (size_t)ret;
+        len = (size_t)ret + 1;
     }
 
     /* allocate space to store it. */
@@ -40,9 +40,20 @@ char* strformat( const char* fmt, ... )
     result[ len ] = '\0';
 
     /* build it. */
-    vsnprintf( result, len + 1, fmt, (char*)(&fmt + 1) );
+    vsnprintf( result, len, fmt, ap );
 
     /* return it. */
+    return result;
+}
+
+char* strformat( const char* fmt, ... )
+{
+    char* result;
+    va_list ap;
+
+    va_start( ap, fmt );
+    result = vstrformat( fmt, ap );
+    va_end( ap );
     return result;
 }
 

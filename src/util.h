@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdarg.h>
 
 /* bool. */
 #ifndef bool
@@ -20,5 +21,6 @@ typedef int bool;
 void strfree( char* str );
 char* strclone( const char* str );
 char* strformat( const char* fmt, ... );
+char* vstrformat( const char* fmt, va_list ap );
 
 #endif
