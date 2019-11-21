@@ -207,7 +207,8 @@ bool disruptorVPrintf( disruptor* d, const char* format, va_list ap )
     /* determine the length of the resultant string. */
     {
         int ret;
-        va_list tmp = ap;
+        va_list tmp;
+        va_copy( tmp, ap );
         ret = vsnprintf( NULL, 0, format, tmp );
         assert( ret >= 0 );
         len = (size_t)( ret + 1 );
